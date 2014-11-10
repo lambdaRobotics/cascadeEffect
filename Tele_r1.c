@@ -128,7 +128,7 @@ void joystick_motor_control ()
     }
 
 
-  // servo basket control: 200 and 100 are limits
+  // servo grab control: 0 and 210 are limits
   // up
 
   	if(joy1Btn(6) == 1 ){
@@ -148,34 +148,18 @@ void joystick_motor_control ()
 
 
 
-  // motor combine control: button9,10: toggle motor on/off, in positive and negative directions
-  // if motor already running, push button9,10 will stop it; otherwise start in pos. or neg direcion
-  // spit out blocks
-  // Since these buttons need to work in toggle mode, it's very important to have
-  // some de-bouncer control, i.e., make sure the program does not count the button pressed twice
-  // when you only intend once.
-  // the added delay is a simple way to achieve this, but cause the program a very small delay
+  // motor rotater control: button9,10: toggle motor on/off, in positive and negative directions
+  // toggles between off an on. Button 9 will stop it, button 10 will start it
+  // once the rotater stops spinning, the balls will fall. 
 
    if(joy1Btn(9) == 1 ){
-     nxtDisplayTextLine(0, "button9");
-     if (motor[rotater] < -combine_power_half) {
-       motor[rotater] = 0;
-     }
-     else {
-  	   motor[rotater] = -combine_power;
-     }
+     motor[rotater] = 0;
      wait10Msec(50);      // wait 0.2s to prevent count button press twice
   }
-nxtDisplayTextLine(0, "%d", ServoValue[servo_grab]);
-  // bring in blocks
+
+  // brings in spheres
    if (joy1Btn(10) == 1) {
-     nxtDisplayTextLine(1, "button10");
-     if (motor[rotater] > combine_power_half) {
-       motor[rotater] = 0;
-     }
-     else {
      motor[rotater] = combine_power;
-     }
      wait10Msec(50);     // wait for 0.2s to prevent count button press twice
    }
 
