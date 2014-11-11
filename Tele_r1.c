@@ -48,7 +48,7 @@
 #define powerlevel_fine_movement 85     // motor power used in small movement steps
 #define powerlevel_slow_movement 30
 #define encoder_step_per_inch    147    // encoder step for per inch robot movement straight
-#define combine_power 75
+#define combine_power 50
 #define combine_power_half 35
 
 
@@ -132,7 +132,7 @@ void joystick_motor_control ()
   // up
 
   	if(joy1Btn(6) == 1 ){
-  		if(ServoValue[servo_grab] <= 210) {
+  		if(ServoValue[servo_grab] <= 240) {
   			servo[servo_grab] += 2;
   			wait10Msec(1);
   			}
@@ -144,22 +144,40 @@ void joystick_motor_control ()
   			wait10Msec(1);
   			}
    }
-
+  	if(joy1Btn(7) == 1 ){
+  		if(ServoValue[servo_auto] <= 255) {
+  			servo[servo_auto] += 1;
+  			wait10Msec(5);
+  			}
+   }
+    // down
+    if(joy1Btn(8) == 1 ){
+    	if(ServoValue[servo_auto] >= 0) {
+  			servo[servo_auto] -= 1;
+  			wait10Msec(5);
+  			}
+   }
 
 
 
   // motor rotater control: button9,10: toggle motor on/off, in positive and negative directions
   // toggles between off an on. Button 9 will stop it, button 10 will start it
-  // once the rotater stops spinning, the balls will fall. 
+  // once the rotater stops spinning, the balls will fall.
 
-   if(joy1Btn(9) == 1 ){
-     motor[rotater] = 0;
-     wait10Msec(50);      // wait 0.2s to prevent count button press twice
-  }
+	if(joy1Btn(9) == 1 ){
+		if(motor[rotater] < 0){
+			motor[rotater] = 0;
+			wait10Msec(50);
+			} else {
+
+			motor[rotater] = 10;
+			wait10Msec(50);      // wait 0.2s to prevent count button press twice
+		}
+	}
 
   // brings in spheres
    if (joy1Btn(10) == 1) {
-     motor[rotater] = combine_power;
+     motor[rotater] = -75;
      wait10Msec(50);     // wait for 0.2s to prevent count button press twice
    }
 

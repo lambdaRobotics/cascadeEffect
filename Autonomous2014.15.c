@@ -29,7 +29,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "JoystickDriver.c"	 //Include file to "handle" the Bluetooth messages.
-
+#define encoder_step_per_inch    125
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -45,12 +45,22 @@
 // In many cases, you may not have to add any code to this function and it will remain "empty".
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-void mov1();void allstop(); void turnright(float angle);
+void mov1();
+
+void robot_move(float inches, int power_level);
+void allstop();
+void turnright();
+void turnleft();
+void turnrighthalf();
+void turnlefthalf();
+void grabrundump();
+void slowlydump(int angle, int speed);
+
 void initializeRobot()
 {
 	// Place code here to sinitialize servos to starting positions.
 	// Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
-
+	servo[servoauto] = 127;
 
 	return;
 }
@@ -91,8 +101,50 @@ task main()
 	///////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////
 	PlaySound(soundBlip);
-	turnright(90.0);
+
+	grabrundump();
+
 }
+
+
+
+void robot_move (float inches, int power_level) {
+  long encoder_target;             // determine how far robot moves
+
+    nMotorEncoder[motorfrontright] = 0;  // reset encoder before each move
+  	nMotorEncoder[motorfrontleft]  = 0;
+  	encoder_target = encoder_step_per_inch * (inches) *1.18;     // target encoder, >0, forward <0 backward
+
+
+  	if (inches > 0) {                        // forward move
+
+  	 while (nMotorEncoder[motorfrontleft] <= (encoder_target)){
+      motor[motorfrontright] = power_level;
+  	  motor[motorbackright] = power_level;
+  	  motor[motorfrontleft] = power_level;
+  	  motor[motorbackleft] = power_level;
+  	  }
+   }
+
+  else if (inches < 0) {                   // backward move
+  		while (nMotorEncoder[motorfrontleft] >= (encoder_target)) {
+  		motor[motorfrontRight] = -power_level;
+  	  motor[motorbackRight] = -power_level;
+  	  motor[motorfrontLeft] = -power_level;
+  	  motor[motorbackLeft] =  -power_level;
+  	  }
+    }
+                                            // immediate stop!
+  	motor[motorfrontRight] = 0;
+  	motor[motorfrontLeft]  = 0;
+  	motor[motorbackRight]  = 0;
+  	motor[motorbackLeft]   = 0;
+
+  }
+
+
+
+
 
 void mov1(){
 	nMotorEncoder[motorfrontleft]=0;
@@ -115,24 +167,114 @@ void mov1(){
 }
 void allstop(){
 	PlaySound(soundBlip);
-motor[motorfrontleft]=0;
-motor[motorfrontright]=0;
-motor[motorbackleft]=0;
-motor[motorbackright]=0;
+	motor[motorfrontleft]=0;
+	motor[motorfrontright]=0;
+	motor[motorbackleft]=0;
+	motor[motorbackright]=0;
 }
-void turnright(float angle){ //angle in degrees
-float dist;
-//dist=PI*18.0*sqrt(2.0)*(angle/360.0);
-//dist=dist/(3.0*PI);
-//dist=dist*360.0*4.0+100.0;
-dist=3400;
-dist=(angle*3400/90.0);
-nMotorEncoder[motorfrontleft]=0;
-while (nMotorEncoder[motorfrontleft]<dist){
-motor[motorfrontleft]=50;
-motor[motorfrontright]=-50;
-motor[motorbackleft]=50;
-motor[motorbackright]=-50;
+
+void forward(int speed){
+	PlaySound(soundBeepBeep);
+	motor[motorfrontleft] = speed;
+	motor[motorbackleft] = speed;
+	motor[motorfrontright] = speed;
+	motor[motorbackright] = speed;
 }
-allstop();
+
+void turnright(){ //angle in degrees
+	float dist;
+	//dist=PI*18.0*sqrt(2.0)*(angle/360.0);
+	//dist=dist/(3.0*PI);
+	//dist=dist*360.0*4.0+100.0;
+	dist=3400;
+	dist=((3400)*(1.10));
+	nMotorEncoder[motorfrontleft]=0;
+	while (nMotorEncoder[motorfrontleft]<dist){
+		motor[motorfrontleft]=50;
+		motor[motorfrontright]=-50;
+		motor[motorbackleft]=50;
+		motor[motorbackright]=-50;
+	}
+	allstop();
+}
+
+void turnrighthalf(){ //angle in degrees
+	float dist;
+	//dist=PI*18.0*sqrt(2.0)*(angle/360.0);
+	//dist=dist/(3.0*PI);
+	//dist=dist*360.0*4.0+100.0;
+	dist=3400;
+	dist=((1700)*(1.10));
+	nMotorEncoder[motorfrontleft]=0;
+	while (nMotorEncoder[motorfrontleft]<dist){
+		motor[motorfrontleft]=50;
+		motor[motorfrontright]=-50;
+		motor[motorbackleft]=50;
+		motor[motorbackright]=-50;
+	}
+	allstop();
+}
+
+void turnleft(){ //angle in degrees
+	float dist;
+	//dist=PI*18.0*sqrt(2.0)*(angle/360.0);
+	//dist=dist/(3.0*PI);
+	//dist=dist*360.0*4.0+100.0;
+	dist=3400;
+	dist=((3400)*(1.25));
+	nMotorEncoder[motorfrontright]=0;
+	while (nMotorEncoder[motorfrontright]<dist){
+		motor[motorfrontleft]=-50;
+		motor[motorfrontright]=50;
+		motor[motorbackleft]=-50;
+		motor[motorbackright]=50;
+	}
+	allstop();
+}
+
+
+void turnlefthalf(){ //angle in degrees
+	float dist;
+	//dist=PI*18.0*sqrt(2.0)*(angle/360.0);
+	//dist=dist/(3.0*PI);
+	//dist=dist*360.0*4.0+100.0;
+	dist=3400;
+	dist=((1700)*(1.25));
+	nMotorEncoder[motorfrontright]=0;
+	while (nMotorEncoder[motorfrontright]<dist){
+		motor[motorfrontleft]=-50;
+		motor[motorfrontright]=50;
+		motor[motorbackleft]=-50;
+		motor[motorbackright]=50;
+	}
+	allstop();
+}
+
+
+void slowlydump(int angle, int speed){
+
+	ClearTimer(T1);
+	int set;
+	while (ServoValue[servoauto] < angle && time1[T1] < 4000  ){
+
+		set = ServoValue[servoauto] + speed;
+		servo[servoauto] = set;
+		wait10Msec(5);
+	}
+	ClearTimer(T1);
+	while (time1[T1] < 4000){
+		set = ServoValue[servoauto] - speed;
+		servo[servoauto] = set;
+		wait10Msec(5);
+	}
+}
+void grabrundump(){
+	servo[servograb] = 250;
+	wait10Msec(100);
+	forward(50);
+	wait10Msec(100);
+	allstop();
+	wait10Msec(200);
+	slowlydump(250, 2);
+
 }
