@@ -57,7 +57,8 @@ void turnrighthalf();
 void turnlefthalf();
 void grabrundump();
 void slowlydump(int angle, int speed);
-
+void speedchoke(int dist, int pace);
+void forward(int speed);
 void initializeRobot()
 {
 	// Place code here to sinitialize servos to starting positions.
@@ -102,12 +103,9 @@ task main()
 	////																									 ////
 	///////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////
-	PlaySound(soundBlip);
+	//PlaySound(soundBlip);
 
-	turnlefthalf();
-	wait10Msec(100);
-	turnlefthalf();
-
+	speedchoke(60, 95);
 }
 
 
@@ -146,7 +144,42 @@ void robot_move (float inches, int power_level) {
 
   }
 
+void speedchoke( int dist, int pace){
+	int power = 15;
+	int speed = 0;
+	int encoder_previous = 0;
+	int encoder_current = 0;
+	int target;
+	int pacehigh = 0;
+	int pacelow = 0;
+	pacehigh = 70;
+	pacelow = 50;
 
+	target = dist*136;
+
+	nMotorEncoder[motorbackleft] = 0;
+	nMotorEncoder[motorbackright] = 0;
+	forward(power);
+
+	while(nMotorEncoder[motorbackleft] < target){
+		wait10Msec(10);
+		encoder_current = nMotorEncoder[motorbackleft];
+		speed = encoder_current - encoder_previous;
+		encoder_previous = encoder_current;
+		if(speed > pacehigh)
+		{
+			power = power  - 1;
+			forward(power);
+		}
+		else if(speed < pacelow)
+		{
+			power = power + 1;
+			forward(power);
+		}
+	}
+	allstop();
+	nMotorEncoder[motorbackleft] = 0;
+}
 
 
 
@@ -170,7 +203,7 @@ void mov1(){
 
 }
 void allstop(){
-	PlaySound(soundBlip);
+	//PlaySound(soundBlip);
 	motor[motorfrontleft]=0;
 	motor[motorfrontright]=0;
 	motor[motorbackleft]=0;
@@ -178,7 +211,6 @@ void allstop(){
 }
 
 void forward(int speed){
-	PlaySound(soundBeepBeep);
 	motor[motorfrontleft] = speed;
 	motor[motorbackleft] = speed;
 	motor[motorfrontright] = speed;
