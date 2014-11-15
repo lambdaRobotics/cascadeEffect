@@ -297,7 +297,7 @@ void forward(int speed){
 	motor[motorbackright] = speed;
 }
 
-<<<<<<< HEAD
+
 void turnright(float encodeval){ 
 	float dist;
 	dist=encodeval; //2176 for 90deg, 965.6 for turnrightquarter,1156 for turnrighthalf,850 for turnrightspec2, 1360 for turnrightspec1
