@@ -46,6 +46,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 void robot_move(float inches, int power_level);
@@ -53,6 +54,8 @@ void allstop();
 void turnright(float encodeval);
 void turnleft(float encodeval2);
 =======
+=======
+>>>>>>> cascade/master
 void mov1();
 
 void robot_move(float inches, int power_level);
@@ -61,6 +64,9 @@ void turnright();
 void turnleft();
 void turnrighthalf();
 void turnlefthalf();
+<<<<<<< HEAD
+>>>>>>> cascade/master
+=======
 >>>>>>> cascade/master
 void grabrundump();
 void slowlydump(int angle, int speed);
@@ -68,13 +74,19 @@ void speedchoke(int dist);
 void speedchoke_back(int dist);
 void forward(int speed);
 <<<<<<< HEAD
+<<<<<<< HEAD
 int irdetect();
 
 =======
+=======
+>>>>>>> cascade/master
 void turnrightquarter();
 int irdetect();
 void turnrightspec1();
 void turnrightspec2();
+<<<<<<< HEAD
+>>>>>>> cascade/master
+=======
 >>>>>>> cascade/master
 
 
@@ -114,7 +126,13 @@ task main()
 {
 	int position;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	initializeRobot();
+=======
+
+	initializeRobot();
+
+>>>>>>> cascade/master
 =======
 
 	initializeRobot();
@@ -130,6 +148,11 @@ task main()
 	///////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	//PlaySound(soundBlip);
+
+>>>>>>> cascade/master
 =======
 	//PlaySound(soundBlip);
 
@@ -141,17 +164,23 @@ task main()
 		robot_move(12, 50);
 		wait10Msec(100);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		turnright(1360);
 		wait10Msec(50);
 		robot_move(8, 50);
 		wait10Msec(50);
 		turnright(965.6);
 =======
+=======
+>>>>>>> cascade/master
 		turnrightspec1();
 		wait10Msec(50);
 		robot_move(8, 50);
 		wait10Msec(50);
 		turnrightquarter();
+<<<<<<< HEAD
+>>>>>>> cascade/master
+=======
 >>>>>>> cascade/master
 
 	}
@@ -159,9 +188,15 @@ task main()
 	else if (position == 2) {
 		wait10Msec(100);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		turnright(850);
 		robot_move(30,50);
 		turnright(965.6);
+=======
+		turnrightspec2();
+		robot_move(30,50);
+		turnrightquarter();S
+>>>>>>> cascade/master
 =======
 		turnrightspec2();
 		robot_move(30,50);
@@ -173,17 +208,23 @@ task main()
 
 	else if (position == 3) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		turnright(2176);
 		wait10Msec(50);
 		robot_move(33,50);
 		wait10Msec(50);
 		turnleft(2142);
 =======
+=======
+>>>>>>> cascade/master
 		turnright();
 		wait10Msec(50);
 		robot_move(33,50);
 		wait10Msec(50);
 		turnleft();
+<<<<<<< HEAD
+>>>>>>> cascade/master
+=======
 >>>>>>> cascade/master
 		wait10Msec(50);
 		robot_move(38,50);
@@ -200,6 +241,10 @@ int irdetect() {
 
 		if (( _dirEnh == 7) && (_strEnh > 40)) {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+			PlaySound(soundBeepBeep);
+>>>>>>> cascade/master
 =======
 			PlaySound(soundBeepBeep);
 >>>>>>> cascade/master
@@ -209,6 +254,10 @@ int irdetect() {
 
 		else if ((_dirEnh == 6) && (_strEnh > 60)) {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+			PlaySound(soundDownwardTones);
+>>>>>>> cascade/master
 =======
 			PlaySound(soundDownwardTones);
 >>>>>>> cascade/master
@@ -218,6 +267,10 @@ int irdetect() {
 
 		else {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+			PlaySound(soundFastUpwardTones);
+>>>>>>> cascade/master
 =======
 			PlaySound(soundFastUpwardTones);
 >>>>>>> cascade/master
@@ -343,9 +396,12 @@ void speedchoke_back( int dist) {  // dist: inches; backward
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 void allstop(){
 =======
+=======
+>>>>>>> cascade/master
 void mov1(){
 	nMotorEncoder[motorbackleft]=0;
 	while (nMotorEncoder[motorbackleft]<2800){
@@ -367,6 +423,9 @@ void mov1(){
 }
 void allstop(){
 	//PlaySound(soundBlip);
+<<<<<<< HEAD
+>>>>>>> cascade/master
+=======
 >>>>>>> cascade/master
 	motor[motorfrontleft]=0;
 	motor[motorfrontright]=0;
@@ -382,10 +441,13 @@ void forward(int speed){
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 void turnright(float encodeval){ 
 	float dist;
 	dist=encodeval; //2176 for 90deg, 965.6 for turnrightquarter,1156 for turnrighthalf,850 for turnrightspec2, 1360 for turnrightspec1
 =======
+=======
+>>>>>>> cascade/master
 void turnright(){ //angle in degrees
 	float dist;
 	//dist=PI*18.0*sqrt(2.0)*(angle/360.0);
@@ -446,6 +508,9 @@ void turnrightspec2(){ //angle in degrees
 	dist=3400;
 	dist=((1700)*(.5));
 
+<<<<<<< HEAD
+>>>>>>> cascade/master
+=======
 >>>>>>> cascade/master
 	nMotorEncoder[motorbackleft]=0;
 	while (nMotorEncoder[motorbackleft]<dist){
@@ -457,10 +522,13 @@ void turnrightspec2(){ //angle in degrees
 	allstop();
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 void turnleft(float encodeval2){ 
 	float dist;
 	dist=encodeval2; //2142 for 90deg, 1079.5 for turnlefthalf
 =======
+=======
+>>>>>>> cascade/master
 void turnrightspec1(){ //angle in degrees
 	float dist;
 	//dist=PI*18.0*sqrt(2.0)*(angle/360.0);
@@ -504,6 +572,9 @@ void turnlefthalf(){ //angle in degrees
 	//dist=dist*360.0*4.0+100.0;
 	dist=3400;
 	dist=((1700)*(.635));
+<<<<<<< HEAD
+>>>>>>> cascade/master
+=======
 >>>>>>> cascade/master
 	nMotorEncoder[motorbackright]=0;
 	while (nMotorEncoder[motorbackright]<dist){
@@ -516,6 +587,10 @@ void turnlefthalf(){ //angle in degrees
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> cascade/master
 =======
 
 >>>>>>> cascade/master
