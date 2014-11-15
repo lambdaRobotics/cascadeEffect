@@ -1,8 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTMotor,  HTMotor)
 #pragma config(Hubs,  S2, HTServo,  none,     none,     none)
-#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
-#pragma config(Sensor, S2,     ,               sensorI2CMuxController)
-#pragma config(Sensor, S3,     ultrason,       sensorSONAR)
+#pragma config(Sensor, S3,     IR,             sensorI2CCustom)
 #pragma config(Motor,  mtr_S1_C1_1,     motora,        tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C1_2,     motorb,        tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     motorfrontleft, tmotorTetrix, openLoop, reversed)
@@ -32,7 +30,7 @@
 
 #include "JoystickDriver.c"	 //Include file to "handle" the Bluetooth messages.
 #define encoder_step_per_inch    125
-
+#include "drivers/hitechnic-irseeker-v2.h"
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //																		initializeRobot
@@ -61,6 +59,10 @@ void speedchoke(int dist);
 void speedchoke_back(int dist);
 void forward(int speed);
 void turnrightquarter();
+int irdetect();
+void turnrightspec1();
+void turnrightspec2();
+
 
 void initializeRobot()
 {
@@ -96,6 +98,8 @@ void initializeRobot()
 
 task main()
 {
+	int position;
+
 	initializeRobot();
 
 	waitForStart(); // Wait for the beginning of autonomous phase.
@@ -109,17 +113,66 @@ task main()
 	///////////////////////////////////////////////////////////
 	//PlaySound(soundBlip);
 
-	speedchoke_back(60);
-	robot_move(-35,50);
-	grabrundump();
-	robot_move(-12,50);
+	robot_move(30, 50);
 	wait10Msec(100);
-	turnrightquarter();
-	robot_move(92, 50);
-	turnright();
-	turnright();
-	servo[servograb]=30;
-	robot_move(-5,50);
+	position = irdetect();
+	if (position == 1){
+		robot_move(12, 50);
+		wait10Msec(100);
+		turnrightspec1();
+		wait10Msec(50);
+		robot_move(8, 50);
+		wait10Msec(50);
+		turnrightquarter();
+
+	}
+
+	else if (position == 2) {
+		wait10Msec(100);
+		turnrightspec2();
+		robot_move(30,50);
+		turnrightquarter();S
+
+
+	}
+
+	else if (position == 3) {
+		turnright();
+		wait10Msec(50);
+		robot_move(33,50);
+		wait10Msec(50);
+		turnleft();
+		wait10Msec(50);
+		robot_move(38,50);
+
+	}
+
+}
+
+int irdetect() {
+		int _dirEnh;
+		int _strEnh;
+
+		HTIRS2readEnhanced(IR, _dirEnh, _strEnh);
+
+		if (( _dirEnh == 7) && (_strEnh > 40)) {
+			PlaySound(soundBeepBeep);
+			wait10Msec(100);
+			return 3;
+		}
+
+		else if ((_dirEnh == 6) && (_strEnh > 60)) {
+			PlaySound(soundDownwardTones);
+			wait10Msec(100);
+			return 2;
+		}
+
+		else {
+			PlaySound(soundFastUpwardTones);
+			wait10Msec(100);
+			return 1;
+		}
+
 }
 
 
@@ -277,7 +330,7 @@ void turnright(){ //angle in degrees
 	//dist=dist/(3.0*PI);
 	//dist=dist*360.0*4.0+100.0;
 	dist=3400;
-	dist=((3400)*(.725));
+	dist=((3400)*(.64));
 	nMotorEncoder[motorbackleft]=0;
 	while (nMotorEncoder[motorbackleft]<dist){
 		motor[motorfrontleft]=50;
@@ -312,6 +365,7 @@ void turnrighthalf(){ //angle in degrees
 	//dist=dist*360.0*4.0+100.0;
 	dist=3400;
 	dist=((1700)*(.68));
+
 	nMotorEncoder[motorbackleft]=0;
 	while (nMotorEncoder[motorbackleft]<dist){
 		motor[motorfrontleft]=50;
@@ -322,13 +376,48 @@ void turnrighthalf(){ //angle in degrees
 	allstop();
 }
 
+void turnrightspec2(){ //angle in degrees
+	float dist;
+	//dist=PI*18.0*sqrt(2.0)*(angle/360.0);
+	//dist=dist/(3.0*PI);
+	//dist=dist*360.0*4.0+100.0;
+	dist=3400;
+	dist=((1700)*(.5));
+
+	nMotorEncoder[motorbackleft]=0;
+	while (nMotorEncoder[motorbackleft]<dist){
+		motor[motorfrontleft]=50;
+		motor[motorfrontright]=-50;
+		motor[motorbackleft]=50;
+		motor[motorbackright]=-50;
+	}
+	allstop();
+}
+void turnrightspec1(){ //angle in degrees
+	float dist;
+	//dist=PI*18.0*sqrt(2.0)*(angle/360.0);
+	//dist=dist/(3.0*PI);
+	//dist=dist*360.0*4.0+100.0;
+	dist=3400;
+	dist=((1700)*(.80));
+	nMotorEncoder[motorbackleft]=0;
+	while (nMotorEncoder[motorbackleft]<dist){
+		motor[motorfrontleft]=50;
+		motor[motorfrontright]=-50;
+		motor[motorbackleft]=50;
+		motor[motorbackright]=-50;
+	}
+	allstop();
+}
+
+
 void turnleft(){ //angle in degrees
 	float dist;
 	//dist=PI*18.0*sqrt(2.0)*(angle/360.0);
 	//dist=dist/(3.0*PI);
 	//dist=dist*360.0*4.0+100.0;
 	dist=3400;
-	dist=((3400)*(.67));
+	dist=((3400)*(.63));
 	nMotorEncoder[motorbackright]=0;
 	while (nMotorEncoder[motorbackright]<dist){
 		motor[motorfrontleft]=-50;
