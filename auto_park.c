@@ -123,11 +123,6 @@ task main()
 		turnright(850);
 		robot_move(30,50);
 		turnright(965.6);
-		turnright(850);
-		robot_move(30,50);
-		turnright(965.6);
-
-
 	}
 
 	else if (position == 3) {
