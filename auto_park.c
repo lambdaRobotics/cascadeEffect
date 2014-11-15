@@ -47,6 +47,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
 void robot_move(float inches, int power_level);
 void allstop();
 void turnright(float encodeval);
@@ -57,7 +58,6 @@ void speedchoke(int dist);
 void speedchoke_back(int dist);
 void forward(int speed);
 int irdetect();
-
 
 
 void initializeRobot()
@@ -116,11 +116,13 @@ task main()
 		robot_move(8, 50);
 		wait10Msec(50);
 		turnright(965.6);
-
 	}
 
 	else if (position == 2) {
 		wait10Msec(100);
+		turnright(850);
+		robot_move(30,50);
+		turnright(965.6);
 		turnright(850);
 		robot_move(30,50);
 		turnright(965.6);
@@ -129,6 +131,7 @@ task main()
 	}
 
 	else if (position == 3) {
+
 		turnright(2176);
 		wait10Msec(50);
 		robot_move(33,50);
@@ -294,6 +297,7 @@ void forward(int speed){
 	motor[motorbackright] = speed;
 }
 
+<<<<<<< HEAD
 void turnright(float encodeval){ 
 	float dist;
 	dist=encodeval; //2176 for 90deg, 965.6 for turnrightquarter,1156 for turnrighthalf,850 for turnrightspec2, 1360 for turnrightspec1
@@ -306,6 +310,7 @@ void turnright(float encodeval){
 	}
 	allstop();
 }
+
 void turnleft(float encodeval2){ 
 	float dist;
 	dist=encodeval2; //2142 for 90deg, 1079.5 for turnlefthalf
@@ -318,6 +323,8 @@ void turnleft(float encodeval2){
 	}
 	allstop();
 }
+
+
 
 void slowlydump(int angle, int speed){
 

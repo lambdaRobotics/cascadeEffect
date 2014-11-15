@@ -49,6 +49,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
 void robot_move(float inches, int power_level);
 void allstop();
 void turnright(float encodeval);
@@ -58,7 +59,6 @@ void slowlydump(int angle, int speed);
 void speedchoke(int dist);
 void speedchoke_back(int dist);
 void forward(int speed);
-
 
 void initializeRobot()
 {
@@ -105,7 +105,6 @@ task main()
 	////																									 ////
 	///////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////
-
 
 	speedchoke_back(60);
 	robot_move(-35,50);
@@ -234,8 +233,6 @@ void speedchoke_back( int dist) {  // dist: inches; backward
 	nMotorEncoder[motorbackleft] = 0;
 }
 
-
-
 void allstop(){
 	motor[motorfrontleft]=0;
 	motor[motorfrontright]=0;
@@ -249,6 +246,7 @@ void forward(int speed){
 	motor[motorfrontright] = speed;
 	motor[motorbackright] = speed;
 }
+
 
 void turnright(float encodeval){ 
 	float dist;
@@ -275,9 +273,6 @@ void turnleft(float encodeval2){
 	}
 	allstop();
 }
-
-
-
 
 void slowlydump(int angle, int speed){
 
